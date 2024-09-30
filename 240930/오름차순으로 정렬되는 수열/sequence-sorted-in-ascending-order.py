@@ -3,12 +3,24 @@ lst = []
 result = []
 for _ in range(n):
     lst.append(int(input()))
-sort_lst = sorted(lst)
+tmp = 0
+idx = 0
 
 for i in range(n):
-    if lst[i] != sort_lst[i]:
-        result.append(i)
-if max(result) == n-1:
-    print(max(result) - min(result) - 1)
-else:
-    print(max(result) - min(result))
+    if tmp == 0:
+        tmp = lst[i]
+
+    if tmp <= lst[i]:
+        tmp = lst[i]
+        continue
+    else:
+        tmp = lst[i]
+        idx = i-1
+        break
+idx_change = 0
+for i in range(n):
+    if lst[i] < tmp:
+        idx_change = i
+    else:
+        print(abs(idx_change - idx)-1)
+        break
