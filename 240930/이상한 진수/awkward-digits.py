@@ -1,20 +1,19 @@
 a = input().strip()
 b = input().strip()
 
-int_a = int(a, 2)
-int_b = int(b, 3)
+ia = int(a, 2)
+ib = int(b, 3)
 
 for i in range(len(a)):
+    ma_plus = ia + (1 << (len(a) - 1 - i)) if a[i] == '0' else ia
+    ma_minus = ia - (1 << (len(a) - 1 - i)) if a[i] == '1' else ia
+
     for j in range(len(b)):
-        a_plus = int_a + (2**i) 
-        a_minus = int_a - (2**i)
-        
-        b_plus = int_b + (3 ** j)
-        b_minus = int_b - (3 ** j)
-        
-        if a_plus == b_plus or a_plus == b_minus:
-            print(a_plus)
-            exit()
-        elif a_minus == b_plus or a_minus == b_minus:
-            print(a_minus)
-            exit()
+        for d in range(3):
+            if str(d) != b[j]:
+                mb = b[:j] + str(d) + b[j + 1:]
+                mb_value = int(mb, 3)
+
+                if ma_plus == mb_value or ma_minus == mb_value:
+                    print(ma_plus if ma_plus == mb_value else ma_minus)
+                    exit()
