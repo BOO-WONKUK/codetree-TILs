@@ -1,22 +1,20 @@
 n = int(input())
 lst = []
-result = []
 for _ in range(n):
     lst.append(int(input()))
 sort_lst = sorted(lst)
 tmp = 0
-idx = 0
+idx = -1 
 
-for i in range(n):
-    if tmp == 0:
-        tmp = lst[i]
-
-    if tmp <= lst[i]:
-        tmp = lst[i]
-        continue
-    else:
-        tmp = lst[i]
-        idx = i-1
+for i in range(1, n):
+    if lst[i] < lst[i - 1]:
+        idx = i  
         break
 
-print(abs(sort_lst.index(tmp) - idx))
+if idx != -1:
+    swap_idx = sort_lst.index(lst[idx])
+
+    result = abs(swap_idx - idx) -1 
+    print(result)
+else:
+    print(0)
