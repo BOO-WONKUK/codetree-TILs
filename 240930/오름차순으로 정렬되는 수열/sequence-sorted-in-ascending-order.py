@@ -1,20 +1,16 @@
 n = int(input())
-lst = []
-for _ in range(n):
-    lst.append(int(input()))
-
+lst = [int(input()) for _ in range(n)]
 sort_lst = sorted(lst)
 
-idx = -1
-for i in range(1, n):
-    if lst[i] < lst[i - 1]:
-        idx = i
-        break
+diff_lst = []
 
-if idx == -1:
+for i in range(n):
+    if lst[i] != sort_lst[i]:
+        diff_lst.append(i)
+
+if len(diff_lst) == 0:
     print(0)
+elif len(diff_lst) == 2:
+    print(1)
 else:
-    tmp = lst[idx]  
-    correct_pos = sort_lst.index(tmp)  
-
-    print(abs(correct_pos - idx)-1)
+    print(len(diff_lst) // 2 + 1)
