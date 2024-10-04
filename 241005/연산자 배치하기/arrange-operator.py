@@ -27,4 +27,4 @@ for perm in all_permutations:
     min_value = min(min_value, result)
     max_value = max(max_value, result)
 
-print(min_value, max_value)
+print(int(min_value), int(max_value))
