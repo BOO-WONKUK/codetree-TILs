@@ -11,6 +11,9 @@ for i in range(n):
     if lst_store[i] <= 0 :
         continue
     cnt += lst_store[i] // lst_num[1]
-    cnt += 1
+    if lst_store[i] // lst_num[1] == 0:
+        continue
+    else:
+        cnt += 1
     
 print(cnt)
