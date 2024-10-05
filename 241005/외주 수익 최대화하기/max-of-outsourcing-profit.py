@@ -11,7 +11,7 @@ for i in range(n):
         dp[i] = 0
     
     for j in range(i):
-        if t[j] < i - j:
+        if t[j] <= i - j:
             if t[i] + i <= n:
                 dp[i] = max(dp[i], dp[j] + p[i])
 
