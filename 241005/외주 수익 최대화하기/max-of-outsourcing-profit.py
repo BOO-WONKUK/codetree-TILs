@@ -8,7 +8,7 @@ dp = p[:]
 
 for i in range(n):
     if t[i] + i > n:
-        continue
+        dp[i] = 0
     
     for j in range(i):
         if t[j] < i - j:
