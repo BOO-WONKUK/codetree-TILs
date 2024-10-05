@@ -11,11 +11,17 @@ for i in range(n):
     if lst_store[i] <= 0 :
         continue
     if lst_store[i] // lst_num[0] > lst_store[i] // lst_num[1]:
-        cnt += lst_store[i] // lst_num[1]
-        cnt += (lst_store[i] % lst_num[0]) // lst_num[1] + 1
+        if lst_store[i] // lst_num[1] != 0:
+            cnt += lst_store[i] // lst_num[1]
+            cnt += (lst_store[i] % lst_num[0]) // lst_num[1] + 1
+        else:
+            cnt += (lst_store[i] // lst_num[0] + 1)
     
     elif lst_store[i] // lst_num[0] < lst_store[i] // lst_num[1]:
-        cnt += lst_store[i] // lst_num[0]
-        cnt += (lst_store[i] % lst_num[1]) // lst_num[0] + 1
+        if lst_store[i] // lst_num[0] != 0:
+            cnt += lst_store[i] // lst_num[0]
+            cnt += (lst_store[i] % lst_num[1]) // lst_num[0] + 1
+        else:
+            cnt += (lst_store[i] // lst_num[1] + 1)
     
 print(cnt)
