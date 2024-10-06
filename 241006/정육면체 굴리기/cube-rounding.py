@@ -63,6 +63,4 @@ for i in lst_dir:
         lst_map[y][x] = lst_dice[5]
     else:
         lst_dice[5] = lst_map[y][x]
-
-    print(x,y)
     print(lst_dice[0])
