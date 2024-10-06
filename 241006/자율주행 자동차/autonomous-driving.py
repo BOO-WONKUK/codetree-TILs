@@ -1,53 +1,83 @@
-n, m = map(int, input().split())
-x, y, d = map(int, input().split())
-lst = [list(map(int, input().split())) for _ in range(n)]
+n, m = tuple(map(int, input().split()))
+curr_x, curr_y, curr_dir = tuple(map(int, input().split()))
+grid = [
+    list(map(int, input().split()))
+    for _ in range(n)
+]
 
-# 동, 남, 서, 북
-dx = [0, 1, 0, -1]
-dy = [1, 0, -1, 0]
+# 이미 방문한 적이 있었는지를 표시해주는 배열입니다.
+visited = [
+    [False for _ in range(m)]
+    for _ in range(n)
+]
 
-# 방문한 셀의 수
-visited_count = 0
 
-def can_move(new_x, new_y):
-    return 0 <= new_y < n and 0 <= new_x < m and lst[new_y][new_x] == 0  # 벽이 아닌지 확인
+# 해당 위치로 갈 수 있는지 확인합니다.
+def can_go(x, y):
+    return not grid[x][y] and not visited[x][y]
 
-def turn_left():
-    global d
-    d = (d - 1) % 4  # 방향을 왼쪽으로 회전
 
-def back():
-    global x, y, d
-    back_d = (d + 2) % 4  # 반대 방향
-    new_x = x + dx[back_d]
-    new_y = y + dy[back_d]
-    if can_move(new_x, new_y):  # 뒤로 이동 가능 여부 확인
-        x, y = new_x, new_y  # 이동
+# 조건에 맞춰 움직여봅니다.
+# 움직인 경우 True를
+# 아닌 경우 False를 반환합니다.
+def simulate():
+    global curr_x, curr_y, curr_dir
+    
+    # 방문 여부를 체크해줍니다.
+    visited[curr_x][curr_y] = True
+
+    # 문제에서 주어진 순서대로 dx, dy를 정의합니다.
+    # 0부터 3까지 차례대로 북동남서 순 입니다.
+    dxs, dys = [-1, 0, 1, 0], [0, 1, 0, -1]
+    
+    # Step1. 현재 방향을 시작으로 4방향을 전부 탐색합니다.
+    
+    for _ in range(4):
+        # 현재 방향을 기준으로 왼쪽 방향으로 갈 수 있는지 확인합니다.
+        left_dir = (curr_dir - 1 + 4) % 4
+        next_x = curr_x + dxs[left_dir]
+        next_y = curr_y + dys[left_dir]
+        
+        # Case1-1. 왼쪽 방향으로 갈 수 있다면 1칸 전진합니다.
+        if can_go(next_x, next_y):
+            curr_x, curr_y = next_x, next_y
+            curr_dir = left_dir
+            return True
+        
+        # Case1-2. 왼쪽 방향으로 갈 수 없다면 좌회전하고 
+        #          그 다음 방향을 시도합니다.
+        else:
+            curr_dir = left_dir
+
+    # Step2. 만약 4곳 모두 갈 곳이 없었다면 한 칸 후진을 시도합니다.
+    back_x = curr_x - dxs[curr_dir]
+    back_y = curr_y - dys[curr_dir]
+    
+    # Case2-1. 후진이 가능하다면 그대로 진행합니다.
+    if not grid[back_x][back_y]:
+        curr_x, curr_y = back_x, back_y
         return True
-    return False  # 이동 불가능
+    # Case2-2. 후진이 불가능하다면 움직일 수 없습니다.
+    else:
+        return False
 
-# 시작 위치를 방문한 것으로 처리
-if lst[y][x] == 0:
-    lst[y][x] = 2  # 현재 위치 방문 처리
-    visited_count += 1  # 방문한 셀 수 증가
-
+    
+# 계속 움직여봅니다.
 while True:
-    can_move_forward = False  # 앞으로 이동할 수 있는지 체크
-    for _ in range(4):  # 4방향 탐색
-        turn_left()  # 방향을 왼쪽으로 회전
-        new_x = x + dx[d]
-        new_y = y + dy[d]
+    # 조건에 맞춰 움직여봅니다.
+    moved = simulate()
 
-        if can_move(new_x, new_y):  # 이동 가능 여부 확인
-            x, y = new_x, new_y  # 이동
-            if lst[y][x] == 0:  # 새로운 위치가 방문하지 않은 곳이면
-                lst[y][x] = 2  # 방문 처리
-                visited_count += 1  # 방문한 셀 수 증가
-            can_move_forward = True  # 이동 가능
-            break  # 이동이 가능하므로 반복 종료
+    # 움직이지 못했다면 종료합니다. 
+    if not moved:
+        break
 
-    if not can_move_forward:  # 더 이상 이동할 수 없는 경우
-        if not back():  # 뒤로 갈 수 없는 경우
-            break  # 종료
+# 움직인 영역을 계산합니다.
+ans = sum([
+    1
+    for i in range(n)
+    for j in range(m)
+    if visited[i][j]
+])
 
-print(visited_count)
+# 출력:
+print(ans)
