@@ -1,4 +1,4 @@
-n,m,x,y,k = map(int, input().split())
+n,m,y,x,k = map(int, input().split())
 lst_map = [list(map(int, input().split())) for _ in range(n)]
 lst_dir = list(map(int, input().split()))
 lst_dice = [0 for _ in range(6)]
@@ -49,6 +49,7 @@ def move_s():
     lst_dice = sub_dice[:]
 
 for i in lst_dir:
+    print(x, y)
     if (x == m-1 and i == 1) or (x == 0 and i == 2) or (y == 0 and i == 3) or (y == n-1 and i == 4) :
         continue
     if i == 1:
@@ -64,4 +65,5 @@ for i in lst_dir:
     else:
         lst_dice[5] = lst_map[y][x]
         lst_map[y][x] = 0
+
     print(lst_dice[0])
