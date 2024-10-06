@@ -21,16 +21,16 @@ def back():
     back_d = (d - 2) % 4  # 반대 방향
     new_x = x + dx[back_d]
     new_y = y + dy[back_d]
-    if can_move(new_x, new_y) or (0 <= new_y < n and 0 <= new_x < m and lst[new_y][new_x] == 2):  # 뒤로 이동 가능 여부 확인
+    if can_move(new_x, new_y):  # 뒤로 이동 가능 여부 확인
         x, y = new_x, new_y  # 이동
         return True
     return False  # 이동 불가능
 
 # 시작 위치를 방문한 것으로 처리
-
 if lst[y][x] == 0:
-    visited_count += 1
-lst[y][x] = 2
+    lst[y][x] = 2  # 현재 위치 방문 처리
+    visited_count += 1  # 방문한 셀 수 증가
+
 while True:
     can_move_forward = False  # 앞으로 이동할 수 있는지 체크
     for _ in range(4):  # 4방향 탐색
@@ -40,8 +40,9 @@ while True:
 
         if can_move(new_x, new_y):  # 이동 가능 여부 확인
             x, y = new_x, new_y  # 이동
-            lst[y][x] = 2  # 방문 처리
-            visited_count += 1  # 방문한 셀 수 증가
+            if lst[y][x] == 0:  # 새로운 위치가 방문하지 않은 곳이면
+                lst[y][x] = 2  # 방문 처리
+                visited_count += 1  # 방문한 셀 수 증가
             can_move_forward = True  # 이동 가능
             break  # 이동이 가능하므로 반복 종료
 
