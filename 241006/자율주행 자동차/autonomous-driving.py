@@ -40,8 +40,9 @@ while True:
 
         if can_move(new_x, new_y):  # 이동 가능 여부 확인
             x, y = new_x, new_y  # 이동
-            lst[y][x] = 2  # 방문 처리
-            visited_count += 1  # 방문한 셀 수 증가
+            if lst[y][x] == 0:  # 새로운 위치가 방문하지 않은 곳이면
+                lst[y][x] = 2  # 방문 처리
+                visited_count += 1  # 방문한 셀 수 증가
             can_move_forward = True  # 이동 가능
             break  # 이동이 가능하므로 반복 종료
 
