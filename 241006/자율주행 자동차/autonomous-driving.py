@@ -1,3 +1,59 @@
+# n,m = map(int, input().split())
+# x,y,d = map(int, input().split())
+# lst = [list(map(int, input().split())) for _ in range(n)]
+#
+# dx = [0,1,0,-1]
+# dy = [1,0,-1,0]
+#
+# def check(cnt):
+#     global x, y, d
+#     if cnt == 4 :
+#         return 'back'
+#     k = d - 1
+#     print(y+dy[k],x+dx[k],k)
+#     if 0<=y+dy[k]<=n-1 and 0<=x+dx[k]<=m-1:
+#         if lst[y+dy[k]][x+dx[k]] == 1 or lst[y+dy[k]][x+dx[k]] == 2:
+#             tmp = check(cnt + 1)
+#             if tmp == 'back':
+#                 return 'back'
+#             elif tmp:
+#                 return True
+#         else:
+#             return True
+#
+# def turn_left():
+#     global x, y, d
+#     k = check(0)
+#     if k: # 좌회전 가능
+#         d -= 1
+#         x += dx[d]
+#         y += dy[d]
+#         lst[y][x] = 2
+#         if turn_left() == False:
+#             return False
+#
+#     elif k == 'back':
+#         if back() == 'end':
+#             return 'end'
+#
+# def back():
+#     global x,y,d
+#     k = d - 2
+#     if lst[y + dy[k]][x + dx[k]] == 1 or lst[y + dy[k]][x + dx[k]] == 2:
+#         return False
+#     else:
+#         x += dx[k]
+#         y += dy[k]
+#
+# turn_left()
+# cnt_sum = 0
+# for i in range(n):
+#     for j in range(m):
+#         if lst[n][m] == 2:
+#             cnt_sum += 1
+# print(cnt_sum)
+
+
 n, m = map(int, input().split())
 x, y, d = map(int, input().split())
 lst = [list(map(int, input().split())) for _ in range(n)]
@@ -27,9 +83,10 @@ def back():
     return False  # 이동 불가능
 
 # 시작 위치를 방문한 것으로 처리
-lst[y][x] = 2
-visited_count += 1
 
+if lst[y][x] == 0:
+    visited_count += 1
+lst[y][x] = 2
 while True:
     can_move_forward = False  # 앞으로 이동할 수 있는지 체크
     for _ in range(4):  # 4방향 탐색
