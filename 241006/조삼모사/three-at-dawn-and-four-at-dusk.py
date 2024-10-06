@@ -1,36 +1,30 @@
-from itertools import  combinations,permutations
+from itertools import combinations
 
 n = int(input())
 lst = [list(map(int, input().split())) for _ in range(n)]
-sub = [i for i in range(1,n+1)]
-com = list(combinations(sub,n//2))
-lst_com = []
+sub = [i for i in range(n)]  # 1-based index를 0-based로 바꿈
+
+com = list(combinations(sub, n // 2))
 result = []
 
 for j in com:
-    tmp = set(i for i in range(1,n+1))
-    k = tmp - set(j)
-    if list(k) not in lst_com and list(j) not in lst_com:
-        lst_com.append(list(j))
-
-for j in lst_com:
-    tmp = set(i for i in range(1, n + 1))
-    k = list(tmp - set(j))
-
-    work_com_morn = list(combinations(j,2))
-    work_com_night = list(combinations(k,2))
+    k = list(set(sub) - set(j))
 
     morn_sum = 0
     night_sum = 0
 
-    for x,y in work_com_morn:
-        morn_sum += lst[y-1][x-1]
-        morn_sum += lst[x - 1][y - 1]
-    for x,y in work_com_night:
-        night_sum += lst[y-1][x-1]
-        night_sum += lst[x - 1][y - 1]
+    # 아침 작업 강도 합계
+    for x in range(n // 2):
+        for y in range(x + 1, n // 2):
+            morn_sum += lst[j[x]][j[y]]
+            morn_sum += lst[j[y]][j[x]]
+
+    # 저녁 작업 강도 합계
+    for x in range(n // 2):
+        for y in range(x + 1, n // 2):
+            night_sum += lst[k[x]][k[y]]
+            night_sum += lst[k[y]][k[x]]
 
     result.append(abs(morn_sum - night_sum))
-
 
 print(min(result))
