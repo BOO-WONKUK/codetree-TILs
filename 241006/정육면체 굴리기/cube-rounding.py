@@ -49,7 +49,6 @@ def move_s():
     lst_dice = sub_dice[:]
 
 for i in lst_dir:
-    print(x, y)
     if (x == m-1 and i == 1) or (x == 0 and i == 2) or (y == 0 and i == 3) or (y == n-1 and i == 4) :
         continue
     if i == 1:
