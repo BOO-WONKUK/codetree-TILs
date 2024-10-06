@@ -14,11 +14,12 @@ def rotation():
             lst[i][x] = lst[i][x+1]
         for x in range(i,n_max): # 우단
             lst[x][m_max] = lst[x+1][m_max]
-        for x in range(m_max,i-1, -1): # 하단
-            lst[m_max][x] = lst[m_max][x-1]
-        for x in range(n_max,i-1, -1): # 좌단
+        for x in range(m_max, i, -1): # 하단
+            lst[n_max][x] = lst[n_max][x-1]
+        for x in range(n_max, i, -1): # 좌단
             lst[x][i] = lst[x-1][i]
         lst[i+1][i] = tmp_left_top
+        
 for _ in range(k):
     rotation()
 
