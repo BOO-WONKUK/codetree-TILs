@@ -19,7 +19,7 @@ def shape3(x,y):
     if 0<=x<=m-3 and 0<=y<=n-2:
         result.append(lst[y][x] + lst[y][x+1] + lst[y][x+2] + lst[y+1][x])
         result.append(lst[y][x] + lst[y][x + 1] + lst[y][x + 2] + lst[y + 1][x+2])
-        result.append(lst[y + 1][x] + lst[y + 1][x + 1] + lst[y + 1][x + 2] + lst[y + 1][x + 2])
+        result.append(lst[y + 1][x] + lst[y + 1][x + 1] + lst[y + 1][x + 2] + lst[y][x + 2])
         result.append(lst[y][x] + lst[y + 1][x] + lst[y + 1][x + 1] + lst[y + 1][x + 2])
 def shape4(x,y):
     if 0<=x<=m-2 and 0<=y<=n-3:
