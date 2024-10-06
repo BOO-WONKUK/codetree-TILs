@@ -17,7 +17,7 @@ def move_e():
 def move_w():
     global x, y, lst_dice
     sub_dice = [0 for _ in range(6)]
-    x += -1
+    x -= -1
     sub_dice[0] = lst_dice[3]
     sub_dice[1] = lst_dice[0]
     sub_dice[2] = lst_dice[2]
