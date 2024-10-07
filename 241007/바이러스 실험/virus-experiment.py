@@ -7,7 +7,7 @@ for _ in range(m):
     vir.append([r-1,c-1,age])
 
 def is_range(r,c):
-    if 0<=r<=4 and 0<=c<=4:
+    if 0<=r<=n-1 and 0<=c<=n-1:
         return True
     return False
 
