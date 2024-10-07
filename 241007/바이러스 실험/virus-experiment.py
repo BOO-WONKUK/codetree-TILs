@@ -1,6 +1,6 @@
 n,m,k = map(int, input().split())
-yang = [[5]*5 for _ in range(5)]
-yang_plus = [list(map(int, input().split())) for _ in range(5)]
+yang = [[5]*n for _ in range(n)]
+yang_plus = [list(map(int, input().split())) for _ in range(n)]
 vir = []
 for _ in range(m):
     r,c,age = map(int, input().split())
