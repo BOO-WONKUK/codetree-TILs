@@ -1,8 +1,8 @@
 n = int(input())
 lst_command = [list(map(int, input().split())) for _ in range(n)]
 
-dx, dy = [0,1,0,-1], [1,0,-1,0]
-result = [[0 for _ in range(100)] for _ in range(100)]
+dx, dy = [0,-1,0,1], [1,0,-1,0]  # 우 상 좌 하
+result = [[0 for _ in range(101)] for _ in range(101)]
 
 def in_range(x,y):
     if 0<=x<=100 and 0<=y<=100:
@@ -11,8 +11,8 @@ def in_range(x,y):
 
 def check_box():
     ans = 0
-    for i in range(99):
-        for j in range(99):
+    for i in range(100):
+        for j in range(100):
             if result[j][i] == 1 and result[j+1][i] == 1 and result[j][i+1] == 1 and result[j+1][i+1] == 1:
                 ans += 1
     return ans
@@ -34,7 +34,7 @@ def save_result(x,y,d,g):
         else:
             sub = reversed(history)
             for i in sub:
-                i = (i-1) % 4
+                i = (i+1) % 4
                 nx = x + dx[i]
                 ny = y + dy[i]
                 if in_range(nx, ny):
