@@ -24,35 +24,27 @@ for i,j in lst_command:
         if check(1,2):
             if check(2,3):
                 if check(3,4):
-                    rotate(3,j)
-                rotate(4,-j)
+                    rotate(4,j)
+                rotate(3,-j)
             rotate(2, -j)
         rotate(1, j)
 
     elif i == 2:
-        # tmp = -1
         if check(1,2):
-            # tmp = 1
             rotate(1, -j)
         if check(2,3):
-            # tmp = 1
             if check(3,4):
                 rotate(4, j)
             rotate(3, -j)
-        # if tmp == 1:
         rotate(2, j)
 
     elif i == 3:
-        # tmp = -1
         if check(2, 3):
-            # tmp = 1
             if check(1, 2):
                 rotate(1, j)
             rotate(2, -j)
         if check(3, 4):
-            # tmp = 1
             rotate(4, -j)
-        # if tmp == 1:
         rotate(3, j)
     elif i == 4:
         if check(3,4):
