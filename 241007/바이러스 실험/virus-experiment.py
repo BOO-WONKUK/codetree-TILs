@@ -39,8 +39,8 @@ def simulate():
                             pass
                         else:
                             vir.append([r+k,c+l,1])
-    for i in range(5):
-        for j in range(5):
+    for i in range(n):
+        for j in range(n):
             yang[i][j] += yang_plus[i][j]
 
 for _ in range(k):
