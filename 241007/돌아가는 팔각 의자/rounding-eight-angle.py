@@ -24,8 +24,8 @@ for i,j in lst_command:
         if check(1,2):
             if check(2,3):
                 if check(3,4):
-                    rotate(4,j)
-                rotate(3,-j)
+                    rotate(4,-j)
+                rotate(3,j)
             rotate(2, -j)
         rotate(1, j)
 
