@@ -25,26 +25,26 @@ def rotate(x,d,k):
 
 def check():
     lst_sub = [[0]* m  for _ in range(n)]
-    dx,dy = [0,1],[1,0]
-    for i in range(m):
-        for j in range(n):
-            for k in range(2):
-                if k == 0 and j == n-1:
+    dx,dy = [0,1,-1,0],[1,0,0,-1]
+    for j in range(n):
+        for i in range(m):
+            for k in range(4):
+                if (k == 0 and j == n-1) or (k == 3 and j == 0):
                     continue
                 nx = (i + dx[k]) % m
-                ny = (j + dy[k]) % m
+                ny = (j + dy[k]) % n
                 if lst[j][i] == lst[ny][nx] :
-                    if lst_sub[j][i] == 0:
-                        lst_sub[j][i] = 1
-                    if lst_sub[ny][nx] == 0:
-                        lst_sub[ny][nx] = 1
+                    lst_sub[j][i] = 1
+                    lst_sub[ny][nx] = 1
 
     del_cnt = 0
     cnt = 0
     sum_ = 0
     for i in range(m):
         for j in range(n):
-            if lst_sub[j][i] == 1:
+            if lst[j][i] == -1:
+                pass
+            elif lst_sub[j][i] == 1:
                 del_cnt += 1
                 lst[j][i] = -1
             else:
@@ -53,13 +53,16 @@ def check():
     # for e in lst:
     #     print(*e)
     # print('-------------')
-    if cnt == 0:
-        return 0,0,0                # 0 판에 숫자X -> 정규화 X
-    elif del_cnt == 0:
+    # if cnt == 0:
+    #     return 0,0,0                # 0 판에 숫자X -> 정규화 X
+    # elif del_cnt == 0:
+    #     return cnt,sum_,1           # 1 지워지는 숫자 X -> 전체수 평균
+    # else:
+    #     return cnt,sum_,2           # 2 지워지는 숫자 O -> 남은 수 평균
+    if del_cnt == 0:
         return cnt,sum_,1           # 1 지워지는 숫자 X -> 전체수 평균
     else:
-        return cnt,sum_,2           # 2 지워지는 숫자 O -> 남은 수 평균
-
+        return 0,0,0
 
 
 for z,x,c in lst_command:
@@ -75,9 +78,7 @@ for z,x,c in lst_command:
     #     print(*e)
     # print('check-------------')
     # print(cnt, sum_,ck_num)
-    if ck_num == 0 or ck_num == 2:
-        pass
-    else:
+    if ck_num == 1:
         avg = sum_ // cnt
         for i in range(m):
             for j in range(n):
