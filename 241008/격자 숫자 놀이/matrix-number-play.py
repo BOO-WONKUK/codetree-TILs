@@ -71,14 +71,18 @@ def simulate():
     #     print(*i)
     # print('-------------')
 time = 0
-while True:
-    simulate()
-    time += 1
-    if in_range(c,r) and lst[r-1][c-1] == k:
-        print(time)
-        # for i in lst:
-        #     print(*i)
-        break
-    if time >= 100:
-        print(-1)
-        break
+if in_range(c, r) and lst[r - 1][c - 1] == k:
+    print(time)
+
+else:
+    while True:
+        simulate()
+        time += 1
+        if in_range(c,r) and lst[r-1][c-1] == k:
+            print(time)
+            # for i in lst:
+            #     print(*i)
+            break
+        if time >= 100:
+            print(-1)
+            break
