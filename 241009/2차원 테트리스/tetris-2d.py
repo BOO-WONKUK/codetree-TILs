@@ -26,8 +26,6 @@ def check_full():
             if lst_yellow[i][j] == 1:
                 push_down(0,5)
 
-
-
     # red 체크
     for i in range(5, 1, -1):
         if sum(lst_red[i]) == 4:
@@ -112,6 +110,7 @@ def simulate(t,x,y):
 score = 0
 for t,x,y in lst_command:
     simulate(t,x,y)
+    check_full()
     check_full()
 print(score)
 ans = 0
