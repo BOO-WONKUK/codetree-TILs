@@ -12,33 +12,34 @@ def push_down(color,num):
         lst_red.pop(num)
         lst_red.insert(0,[0,0,0,0])
 
+
 def check_full():
     global score
     # yellow 체크
-    for i in range(0,2):
-        cnt_yel = 0
-        for j in range(4):
-            if lst_yellow[i][j] == 1:
-                cnt_yel +=1
-        if cnt_yel>=1:
-            push_down(0,5)
     for i in range(5,1,-1):
         if sum(lst_yellow[i]) == 4:
             push_down(0,i)
             score += 1
-    # red 체크
     for i in range(0,2):
-        cnt_red = 0
+        cnt_yel = 0
         for j in range(4):
-            if lst_red[i][j] == 1:
-                cnt_red +=1
-        if cnt_red>=1:
-            push_down(1,5)
+            if lst_yellow[i][j] == 1:
+                push_down(0,5)
 
+
+
+    # red 체크
     for i in range(5, 1, -1):
         if sum(lst_red[i]) == 4:
             push_down(1,i)
             score += 1
+    for i in range(0,2):
+        cnt_red = 0
+        for j in range(4):
+            if lst_red[i][j] == 1:
+                push_down(1,5)
+
+
 
 def simulate(t,x,y):
     red_change = {
@@ -59,7 +60,7 @@ def simulate(t,x,y):
                 break
 
         for i in range(0,6):
-            if i == 5and lst_red[i][red_y] == 0:
+            if i == 5 and lst_red[i][red_y] == 0:
                 lst_red[i][red_y] = 1
                 break
             if lst_red[i][red_y] == 1:
@@ -67,7 +68,7 @@ def simulate(t,x,y):
                 break
 
     if t == 2:
-        for i in range(0, 6):  # 범위 생각 다시
+        for i in range(0, 6):  # yellow
             if i == 5 and lst_yellow[i][y] == 0 and lst_yellow[i][y+1] == 0:
                 lst_yellow[i][y] = 1
                 lst_yellow[i][y+1] = 1
@@ -77,7 +78,7 @@ def simulate(t,x,y):
                 lst_yellow[i - 1][y+1] = 1
                 break
 
-        for i in range(0, 6):
+        for i in range(0, 6):  # red
             if i == 5 and lst_red[i][red_y] == 0 and lst_red[i-1][red_y] == 0:
                 lst_red[i][red_y] = 1
                 lst_red[i-1][red_y] = 1
@@ -118,7 +119,5 @@ ans = 0
 
 for l in [lst_red,lst_yellow]:
     for o in l:
-
         ans += sum(o)
-
 print(ans)
