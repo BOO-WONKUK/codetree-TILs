@@ -115,11 +115,11 @@ def crush_san_ru(dir):  # 산타가 루돌프한테 충돌
                 lst_stun_san.append((i,turn))
                 lst_san_score[i] += d
                 idx = i
-                nx = lst_san[idx][0] - (san_dx[dir[i-1]] * d)
-                ny = lst_san[idx][1] - (san_dy[dir[i-1]] * d)
+                nx = lst_san[idx][0] - (san_dx[dir] * d)
+                ny = lst_san[idx][1] - (san_dy[dir] * d)
                 if in_range(nx,ny):
                     if [nx,ny] in lst_san:
-                        sangho(nx,ny,1,dir[i-1])
+                        sangho(nx,ny,1,dir)
                         lst_san[idx][0] = nx
                         lst_san[idx][1] = ny
                     else:
@@ -181,33 +181,48 @@ def santa():
     global rr, rc
     lst_dir_idx = []
     sub_stun = []
-    for w,e in lst_stun_san:
+
+    # 현재 스턴 상태에 있는 산타 추적
+    for w, e in lst_stun_san:
         sub_stun.append(w)
 
-    for san_num in range(1,p+1):
+    # 각 산타 이동 및 즉시 충돌 처리
+    for san_num in range(1, p + 1):
         if san_num not in sub_stun and san_num not in lst_san_die:
             sr = lst_san[san_num][0]
             sc = lst_san[san_num][1]
             sub_r = rr - sr
             sub_c = rc - sc
             dir_idx = -1
-            min_dir = (sub_r**2 + sub_c**2)
+            min_dir = (sub_r ** 2 + sub_c ** 2)
+
+            # 4방향 탐색하여 가장 가까운 방향으로 이동
             for i in range(4):
                 nx = sr + san_dx[i]
                 ny = sc + san_dy[i]
-                if in_range(nx,ny) and can_go_san(nx,ny):
-                    if min_dir > ((nx-rr)**2 + (ny-rc)**2):
-                        min_dir = ((nx-rr)**2 + (ny-rc)**2)
+                if in_range(nx, ny) and can_go_san(nx, ny):
+                    if min_dir > ((nx - rr) ** 2 + (ny - rc) ** 2):
+                        min_dir = ((nx - rr) ** 2 + (ny - rc) ** 2)
                         dir_idx = i
+
+            # 산타가 이동할 방향이 정해졌다면
             if dir_idx != -1:
+                nx, ny = sr + san_dx[dir_idx], sc + san_dy[dir_idx]
+                lst_san[san_num] = [nx, ny]  # 산타 위치 업데이트
                 lst_dir_idx.append(dir_idx)
-                lst_san[san_num][0] += san_dx[dir_idx]
-                lst_san[san_num][1] += san_dy[dir_idx]
+
+                # 이동한 위치가 루돌프와 일치하면 충돌 처리
+                if nx == rr and ny == rc:
+                    crush_san_ru(dir_idx)  # 산타 충돌 처리
             else:
+                # 이동할 수 없는 경우 방향 -1로 설정
                 lst_dir_idx.append(-1)
         else:
+            # 스턴 중이거나 사망한 산타는 방향 -1로 설정
             lst_dir_idx.append(-1)
+
     return lst_dir_idx
+
 
 
 for turn in range(m):
@@ -217,37 +232,37 @@ for turn in range(m):
     ru_dir = rudol()
     crush_ru_san(ru_dir)
 
-    map_ = [[0] * 5 for _ in range(5)]
-    for iii in range(1, p + 1):
-        if in_range(lst_san[iii][0], lst_san[iii][1]):
-            map_[lst_san[iii][0] - 1][lst_san[iii][1] - 1] = iii
-        map_[rr - 1][rc - 1] = -1
-    for kkk in map_:
-        print(*kkk)
-    print()
+    # map_ = [[0] * n for _ in range(n)]
+    # for iii in range(1, p + 1):
+    #     if in_range(lst_san[iii][0], lst_san[iii][1]):
+    #         map_[lst_san[iii][0] - 1][lst_san[iii][1] - 1] = iii
+    #     map_[rr - 1][rc - 1] = -1
+    # for kkk in map_:
+    #     print(*kkk)
+    # print()
 
     san_dir = santa()
-    crush_san_ru(san_dir)
+    # crush_san_ru(san_dir)
     if len(lst_san_die) == p:
         break
     for i in range(1, p+1):
         if i not in lst_san_die:
             lst_san_score[i] += 1
-    map_ = [[0]*5 for _ in range(5)]
-    for iii in range(1,p+1):
-        if in_range(lst_san[iii][0],lst_san[iii][1]):
-            map_[lst_san[iii][0]-1][lst_san[iii][1]-1] = iii
-        map_[rr-1][rc-1] = -1
-    for kkk in map_:
-        print(*kkk)
+    # map_ = [[0]*n for _ in range(n)]
+    # for iii in range(1,p+1):
+    #     if in_range(lst_san[iii][0],lst_san[iii][1]):
+    #         map_[lst_san[iii][0]-1][lst_san[iii][1]-1] = iii
+    #     map_[rr-1][rc-1] = -1
+    # for kkk in map_:
+    #     print(*kkk)
 
-    print('턴',turn+1)
-    print(rr, rc)
-    print('lst san', lst_san)
-    print('stun', lst_stun_san)
-    print('die',lst_san_die)
-    print('score',lst_san_score)
-    print('--------------')
+    # print('턴',turn+1)
+    # print(rr, rc)
+    # print('lst san', lst_san)
+    # print('stun', lst_stun_san)
+    # print('die',lst_san_die)
+    # print('score',lst_san_score)
+    # print('--------------')
 
 lst_san_score.pop(0)
 print(' '.join(map(str, lst_san_score)))
