@@ -189,13 +189,21 @@ def santa():
 
 
 for turn in range(m):
-
-    for stun_san,cnt_turn in lst_stun_san:
-        if turn == cnt_turn+2:
+    for stun_san,cnt_turn in reversed(lst_stun_san):
+        if turn >= cnt_turn+2:
             lst_stun_san.remove((stun_san,cnt_turn))
     ru_dir = rudol()
-
     crush_ru_san(ru_dir)
+
+    # map_ = [[0] * 5 for _ in range(5)]
+    # for iii in range(1, p + 1):
+    #     if in_range(lst_san[iii][0], lst_san[iii][1]):
+    #         map_[lst_san[iii][0] - 1][lst_san[iii][1] - 1] = iii
+    #     map_[rr - 1][rc - 1] = -1
+    # for kkk in map_:
+    #     print(*kkk)
+    # print()
+
     san_dir = santa()
     crush_san_ru(san_dir)
     if len(lst_san_die) == p:
@@ -203,6 +211,14 @@ for turn in range(m):
     for i in range(1, p+1):
         if i not in lst_san_die:
             lst_san_score[i] += 1
+    # map_ = [[0]*5 for _ in range(5)]
+    # for iii in range(1,p+1):
+    #     if in_range(lst_san[iii][0],lst_san[iii][1]):
+    #         map_[lst_san[iii][0]-1][lst_san[iii][1]-1] = iii
+    #     map_[rr-1][rc-1] = -1
+    # for kkk in map_:
+    #     print(*kkk)
+    #
     # print('턴',turn+1)
     # print(rr, rc)
     # print('lst san', lst_san)
