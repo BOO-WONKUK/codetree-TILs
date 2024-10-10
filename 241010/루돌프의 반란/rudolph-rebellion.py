@@ -21,6 +21,7 @@ def can_go_san(x,y):
     if [x,y] in lst_san:
         return False
     return True
+
 def sangho(x, y, num, dir):
     # 다음 위치 설정
     nx = x + ru_dx[dir] if num == 0 else x - san_dx[dir]
@@ -155,23 +156,21 @@ def rudol():
     sub_r = goal_sr - rr
     sub_c = goal_sc - rc
     ru_dir = -1
-    if sub_r == 0 and sub_c != 0:
-        if sub_c < 0:    # 좌
-            ru_dir = 6
-        else:               # 우
-            ru_dir = 2
-    elif sub_r != 0 and sub_c == 0:
-        if sub_r > 0:    # 하
-            ru_dir = 4
-        else:               # 상
-            ru_dir = 0
-    elif sub_r > 0 and sub_c > 0:   # 우하
+    if sub_r > 0 and sub_c > 0:   # 우하
         ru_dir = 3
+    elif sub_r > 0 and sub_c == 0:
+        ru_dir = 4      # 하
     elif sub_r > 0 and sub_c < 0:   # 좌하
         ru_dir = 5
+    elif sub_r == 0 and sub_c > 0:
+        ru_dir = 2  # 우
+    elif sub_r == 0 and sub_c < 0:
+        ru_dir = 6  # 좌
     elif sub_r < 0 and sub_c > 0:   # 우상
         ru_dir = 1
-    elif sub_r < 0 and sub_c < 0:   # 우하
+    elif sub_r < 0 and sub_c == 0:
+        ru_dir = 0  # 상
+    elif sub_r < 0 and sub_c < 0:  # 좌상
         ru_dir = 7
     rr += ru_dx[ru_dir]
     rc += ru_dy[ru_dir]
@@ -218,14 +217,14 @@ for turn in range(m):
     ru_dir = rudol()
     crush_ru_san(ru_dir)
 
-    # map_ = [[0] * 5 for _ in range(5)]
-    # for iii in range(1, p + 1):
-    #     if in_range(lst_san[iii][0], lst_san[iii][1]):
-    #         map_[lst_san[iii][0] - 1][lst_san[iii][1] - 1] = iii
-    #     map_[rr - 1][rc - 1] = -1
-    # for kkk in map_:
-    #     print(*kkk)
-    # print()
+    map_ = [[0] * 5 for _ in range(5)]
+    for iii in range(1, p + 1):
+        if in_range(lst_san[iii][0], lst_san[iii][1]):
+            map_[lst_san[iii][0] - 1][lst_san[iii][1] - 1] = iii
+        map_[rr - 1][rc - 1] = -1
+    for kkk in map_:
+        print(*kkk)
+    print()
 
     san_dir = santa()
     crush_san_ru(san_dir)
@@ -234,21 +233,21 @@ for turn in range(m):
     for i in range(1, p+1):
         if i not in lst_san_die:
             lst_san_score[i] += 1
-    # map_ = [[0]*5 for _ in range(5)]
-    # for iii in range(1,p+1):
-    #     if in_range(lst_san[iii][0],lst_san[iii][1]):
-    #         map_[lst_san[iii][0]-1][lst_san[iii][1]-1] = iii
-    #     map_[rr-1][rc-1] = -1
-    # for kkk in map_:
-    #     print(*kkk)
-    #
-    # print('턴',turn+1)
-    # print(rr, rc)
-    # print('lst san', lst_san)
-    # print('stun', lst_stun_san)
-    # print('die',lst_san_die)
-    # print('score',lst_san_score)
-    # print('--------------')
+    map_ = [[0]*5 for _ in range(5)]
+    for iii in range(1,p+1):
+        if in_range(lst_san[iii][0],lst_san[iii][1]):
+            map_[lst_san[iii][0]-1][lst_san[iii][1]-1] = iii
+        map_[rr-1][rc-1] = -1
+    for kkk in map_:
+        print(*kkk)
+
+    print('턴',turn+1)
+    print(rr, rc)
+    print('lst san', lst_san)
+    print('stun', lst_stun_san)
+    print('die',lst_san_die)
+    print('score',lst_san_score)
+    print('--------------')
 
 lst_san_score.pop(0)
 print(' '.join(map(str, lst_san_score)))
