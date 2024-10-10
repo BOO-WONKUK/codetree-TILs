@@ -21,29 +21,52 @@ def can_go_san(x,y):
     if [x,y] in lst_san:
         return False
     return True
+def sangho(x, y, num, dir):
+    # 다음 위치 설정
+    nx = x + ru_dx[dir] if num == 0 else x - san_dx[dir]
+    ny = y + ru_dy[dir] if num == 0 else y - san_dy[dir]
 
-def sangho(x,y,num,dir):
-    if num == 0: # 루 -> 산 8방
-        if can_go_san(x,y): # 그 좌표에 산타가 없다면 상호작용 X
-            pass
-        else:               # 산타 있다면 상호작용 O
-            idx = lst_san.index([x,y])
-            lst_san[idx][0] += ru_dx[dir]
-            lst_san[idx][1] += ru_dy[dir]
-            x = lst_san[i][0] + ru_dx[dir] if num == 0 else lst_san[i][0] - san_dx[dir]
-            y = lst_san[i][1] + ru_dy[dir] if num == 0 else lst_san[i][1] - san_dy[dir]
-            sangho(x,y,num,dir)
+    # 게임판 안에 있고, 그 위치에 다른 산타가 있는 경우
+    if in_range(nx, ny):
+        if [nx, ny] in lst_san:
+            idx = lst_san.index([nx, ny])  # 해당 산타 인덱스 찾기
+            sangho(nx, ny, num, dir)  # 재귀적으로 상호작용 처리
 
-    elif num == 1: # 산 -> 루 4방
-        if can_go_san(x,y): # 그 좌표에 산타가 없다면 상호작용 X
-            pass
-        else:               # 산타 있다면 상호작용 O
-            idx = lst_san.index([x,y])
-            lst_san[idx][0] -= san_dx[dir]
-            lst_san[idx][1] -= san_dy[dir]
-            x = lst_san[i][0] + ru_dx[dir] if num == 0 else lst_san[i][0] - san_dx[dir]
-            y = lst_san[i][1] + ru_dy[dir] if num == 0 else lst_san[i][1] - san_dy[dir]
-            sangho(x, y, num, dir)
+            # 밀려난 산타의 위치 업데이트
+            lst_san[idx][0] += ru_dx[dir] if num == 0 else -san_dx[dir]
+            lst_san[idx][1] += ru_dy[dir] if num == 0 else -san_dy[dir]
+        else:
+            # 위치가 비어있다면 현재 산타의 위치를 업데이트
+            idx = lst_san.index([x, y])
+            lst_san[idx] = [nx, ny]
+    else:
+        # 게임판 밖으로 나간 경우 산타 제거
+        idx = lst_san.index([x, y])
+        lst_san_die.append(idx)
+        lst_san[idx] = [-100, -100]
+
+# def sangho(x,y,num,dir):
+#     if num == 0: # 루 -> 산 8방
+#         if not can_go_san(x,y): # 그 좌표에 산타가 없다면 상호작용 X
+#             pass
+#         else:               # 산타 있다면 상호작용 O
+#             idx = lst_san.index([x,y])
+#             lst_san[idx][0] += ru_dx[dir]
+#             lst_san[idx][1] += ru_dy[dir]
+#             x = lst_san[i][0] + ru_dx[dir] if num == 0 else lst_san[i][0] - san_dx[dir]
+#             y = lst_san[i][1] + ru_dy[dir] if num == 0 else lst_san[i][1] - san_dy[dir]
+#             sangho(x,y,num,dir)
+#
+#     elif num == 1: # 산 -> 루 4방
+#         if not can_go_san(x,y): # 그 좌표에 산타가 없다면 상호작용 X
+#             pass
+#         else:               # 산타 있다면 상호작용 O
+#             idx = lst_san.index([x,y])
+#             lst_san[idx][0] -= san_dx[dir]
+#             lst_san[idx][1] -= san_dy[dir]
+#             x = lst_san[i][0] + ru_dx[dir] if num == 0 else lst_san[i][0] - san_dx[dir]
+#             y = lst_san[i][1] + ru_dy[dir] if num == 0 else lst_san[i][1] - san_dy[dir]
+#             sangho(x, y, num, dir)
 
 # def sangho(x, y, who, dir):
 #     nx = lst_san[i][0] + ru_dx[dir] if who == 0 else lst_san[i][0] - san_dx[dir]
