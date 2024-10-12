@@ -15,19 +15,30 @@ def in_range(i,j):
 
 def rotate(i,j,wh):
     global chul_x,chul_y
-    sub_miro = []
+
     miro[chul_x-1][chul_y-1] = -100
-    for idxx in range(m):
-        px,py,pp = people[idxx][0],people[idxx][1],people[idxx][2]
-        if pp == 1:
-            miro[px-1][py-1] = (idxx+1)*-1
-    for x in range(j,j+wh):           # 미로 회전
-        tmp = []
-        for k in range(i+wh-1,i-1,-1):
-            tmp.append(miro[k][x])
-        sub_miro.append(tmp)
-
-
+    # for idxx in range(m):
+    #     px,py,pp = people[idxx][0],people[idxx][1],people[idxx][2]
+    #     if pp == 1:
+    #         miro[px-1][py-1] = (idxx+1)*-1
+    osub_miro = []
+    for q in range(i,i+wh):
+        osub_miro.append(miro[q][j:j+wh])
+    # for x in range(j,j+wh):           # 미로 회전
+    #     tmp = []
+    #     for k in range(i+wh-1,i-1,-1):
+    #         tmp.append(miro[k][x])
+    #     sub_miro.append(tmp)
+    sub_miro = [qqq[:] for qqq in osub_miro]
+    people_tmp= []
+    for x in range(wh):
+        for y in range(wh):
+            sub_miro[x][y] = osub_miro[wh-y-1][x]
+            for cntt,(aa,bb,cc) in enumerate(people):
+                if (wh-y-1,x,1) == (aa-i-1,bb-j-1,cc):
+                    people_tmp.append([cntt,i+x+1,j+y+1,1])
+    for a,b,c,d in people_tmp:
+        people[a] = [b,c,d]
     for x in range(wh):                 # 벽 내구도 감소
         for y in range(wh):
             if sub_miro[x][y] > 0:
@@ -40,28 +51,26 @@ def rotate(i,j,wh):
             if miro[ii][jj] == -100:
                 chul_x, chul_y = ii + 1, jj + 1
                 miro[ii][jj] = 0
-            elif miro[ii][jj] < 0:
-                tmpp = miro[ii][jj] * -1 - 1
-                miro[ii][jj] = 0
-                people[tmpp][0],people[tmpp][1] = ii+1,jj+1
+            # elif miro[ii][jj] < 0:
+            #     tmpp = miro[ii][jj] * -1 - 1
+            #     miro[ii][jj] = 0
+            #     people[tmpp][0],people[tmpp][1] = ii+1,jj+1
 
 
 for turn in range(k):
-    die_cnt = 0
-    for a,b,c in people:
-        if c == 0:
-            die_cnt += 1
-    if die_cnt == m:
-        break
     # 참가자 이동
     for num in range(m):
         if people[num][2] == 0: continue
+
         pi, pj = people[num][0], people[num][1]
+        if (chul_x,chul_y) == (pi,pj):
+            people[num][2] = 0
+            continue
         mn_dist = abs(chul_x-pi) + abs(chul_y - pj)
         mn_idx = -1
         for idx_dir in range(3,-1,-1):
             ni,nj = pi+dx[idx_dir], pj+dy[idx_dir]
-            if in_range(ni, nj) and miro[ni-1][nj-1] < 1:
+            if in_range(ni, nj) and miro[ni-1][nj-1] == 0:
                 ndist = abs(chul_x-ni) + abs(chul_y-nj)
                 if ndist < mn_dist:
                     mn_dist = ndist
@@ -77,10 +86,16 @@ for turn in range(k):
             else:
                 people[num][0], people[num][1] = ni, nj
 
+    die_cnt = 0
+    for a, b, c in people:
+        if c == 0:
+            die_cnt += 1
+    if die_cnt == m:
+        break
 
     # 미로 회전
     lst_box = []
-    for mx_wh in range(2,n):
+    for mx_wh in range(2,n+1):
         for i in range(n-mx_wh+1):
             for j in range(n-mx_wh+1):
                 chul_tmp = 0
@@ -94,11 +109,10 @@ for turn in range(k):
                 if chul_tmp >= 1 and people_tmp >= 1:
                     lst_box.append([i,j,mx_wh])         # 좌상단 좌표, 가로세로 너비
         if len(lst_box) > 0:
+            lst_box.sort(key = lambda x:(x[0],x[1],x[2]))
+            ro_i, ro_j, ro_wh = lst_box[0]
+            rotate(ro_i,ro_j,ro_wh)
             break
-    if len(lst_box) > 0:
-        lst_box.sort(key = lambda x:(x[0],x[1],x[2]))
-        ro_i, ro_j, ro_wh = lst_box[0]
-        rotate(ro_i,ro_j,ro_wh)
 
 
 
